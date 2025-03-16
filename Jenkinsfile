@@ -17,12 +17,14 @@ pipeline {
             steps {
                 script {
                     def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                    sh '''
-                        python3 -m venv venv
+                    echo "Commit Message: ${commitMessage}"
+                    def status = sh(script: """
                         . venv/bin/activate
-                        pip install textblob
                         python3 analyze_commit.py "${commitMessage}"
-                    '''
+                        """, returnStatus: true) 
+                    if (status != 0) {
+                        error("❌ Build failed due to bad commit message")
+                    }
                 }
             }
         }
