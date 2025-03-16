@@ -7,6 +7,7 @@ def analyze_commit(commit_msg):
     # Example: Block commits with negative sentiment or short messages
     if len(commit_msg) < 10 or blob.sentiment.polarity < 0:
         return "BLOCK: Commit message is too short or negative"
+        sys.exit(1)
     return "PASS: Commit message is good"
 
 if __name__ == "__main__":
