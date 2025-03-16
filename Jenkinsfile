@@ -1,16 +1,22 @@
 pipeline {
     agent any
     stages {
-        stage('Clone Repository') {
+        stage('Setup Python Virtual Environment') {
             steps {
-                git 'https://github.com/DishaAdiga/CI-CD.git'
+                sh '''
+                python3 -m venv venv
+                source venv/bin/activate
+                pip install --upgrade pip
+                pip install textblob
+                '''
             }
         }
-        stage('Analyze Commit Message') {
+        stage('Analyze Commit') {
             steps {
-                script {
-                    sh 'python3 analyze_commit.py'
-                }
+                sh '''
+                source venv/bin/activate
+                python3 analyze_commit.py
+                '''
             }
         }
     }
