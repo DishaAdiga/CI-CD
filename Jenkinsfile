@@ -14,9 +14,12 @@ pipeline {
         }
         stage('Analyze Commit') {
             steps {
+                def commitMessage = sh(script: "git log -1 --pretty=%B", returnStdout: true).trim()
                 sh '''
-                source venv/bin/activate
-                python3 analyze_commit.py
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install textblob
+                python3 analyze_commit.py "${commitMessage}"
                 '''
             }
         }
