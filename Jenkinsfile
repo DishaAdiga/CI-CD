@@ -5,10 +5,11 @@ pipeline {
             steps {
                 sh '''
                 python3 -m venv venv
-                source venv/bin/activate
-                pip install --upgrade pip
+                . venv/bin/activate 
                 pip install textblob
+                python3 analyze_commit.py
                 '''
+
             }
         }
         stage('Analyze Commit') {
